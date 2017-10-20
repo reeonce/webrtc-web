@@ -5,8 +5,27 @@ var nodeStatic = require('node-static');
 var http = require('http');
 var socketIO = require('socket.io');
 
-var fileServer = new(nodeStatic.Server)();
-var app = http.createServer(function(req, res) {
+var https = require('https');
+var fs = require('fs');
+
+var options = {
+  key: fs.readFileSync('../cert/privateKey.key'),
+  cert: fs.readFileSync('../cert/certificate.crt')
+};
+
+var nodeStaticOptions = {
+  cache: "no-cache",
+  headers: {
+    "cache-control": "no-cache, must-revalidate",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "X-Requested-With",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "PUT, GET, POST, DELETE, OPTIONS"
+  }
+}
+
+var fileServer = new nodeStatic.Server('./', nodeStaticOptions);
+var app = https.createServer(options, function(req, res) {
   fileServer.serve(req, res);
 }).listen(8080);
 
