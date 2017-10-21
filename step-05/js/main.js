@@ -10,7 +10,8 @@ var turnReady;
 
 var pcConfig = {
   'iceServers': [{
-     'urls': 'stun:stun.miwifi.com'
+     'urls': 'stun:stun.miwifi.com',
+     'urls': 'stun:sip.pjsip.org'
   }]
 };
 
@@ -146,7 +147,7 @@ window.onbeforeunload = function() {
 
 function createPeerConnection() {
   try {
-    pc = new RTCPeerConnection(null);
+    pc = new RTCPeerConnection(pcConfig);
     pc.onicecandidate = handleIceCandidate;
     pc.onaddstream = handleRemoteStreamAdded;
     pc.onremovestream = handleRemoteStreamRemoved;
