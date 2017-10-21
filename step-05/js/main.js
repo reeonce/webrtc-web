@@ -149,7 +149,7 @@ function createPeerConnection() {
   try {
     pc = new RTCPeerConnection(pcConfig);
     pc.onicecandidate = handleIceCandidate;
-    pc.onaddstream = handleRemoteStreamAdded;
+    pc.ontrack = handleRemoteStreamAdded;
     pc.onremovestream = handleRemoteStreamRemoved;
     console.log('Created RTCPeerConnnection');
   } catch (e) {
@@ -171,12 +171,6 @@ function handleIceCandidate(event) {
   } else {
     console.log('End of candidates.');
   }
-}
-
-function handleRemoteStreamAdded(event) {
-  console.log('Remote stream added.');
-  remoteVideo.srcObject = event.stream;
-  remoteStream = event.stream;
 }
 
 function handleCreateOfferError(event) {
@@ -239,8 +233,8 @@ function requestTurn(turnURL) {
 
 function handleRemoteStreamAdded(event) {
   console.log('Remote stream added.');
-  remoteVideo.srcObject = event.stream;
-  remoteStream = event.stream;
+  remoteVideo.srcObject = event.streams[0];
+  remoteStream = event.streams[0];
 }
 
 function handleRemoteStreamRemoved(event) {
